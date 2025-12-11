@@ -190,7 +190,7 @@
     </button>
   </div>
 
-  <!-- MODAL CHECKOUT WA -->
+  <!-- MODAL CHECKOUT WA (tetap ada tapi tidak digunakan untuk QRIS/subtotal) -->
   <div id="checkout-modal"
     class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
     <div class="bg-white p-6 rounded-xl w-80 text-center">
@@ -243,40 +243,20 @@
     const TOKO_LAT = -6.567778;
     const TOKO_LON = 106.825135;
 
+    // Data pembeli otomatis
+    let buyerName = "Nama Otomatis";
+    let buyerAddress = "Alamat Otomatis";
+    let buyerWA = "08123456789";
+    let buyerLat = 0;
+    let buyerLon = 0;
+
     const qrisBtn = document.getElementById("qris-btn");
-    const nameInput = document.getElementById("buyer-name");
-    const addressInput = document.getElementById("buyer-address");
-    const waInput = document.getElementById("buyer-wa");
-
-    // Fungsi cek input
-    function cekInputQRIS() {
-      if (nameInput.value.trim() && addressInput.value.trim() && waInput.value.trim()) {
-        qrisBtn.disabled = false;
-        qrisBtn.classList.remove("opacity-50", "cursor-not-allowed");
-      } else {
-        qrisBtn.disabled = true;
-        qrisBtn.classList.add("opacity-50", "cursor-not-allowed");
-      }
-    }
-
-    [nameInput, addressInput, waInput].forEach(el => {
-      el.addEventListener("input", cekInputQRIS);
-    });
-
-    cekInputQRIS(); // default disabled
-
-    function addToCart(n, p) {
-      cart.push({ name: n, price: p });
-      document.getElementById("cart-count").innerText = cart.length;
-      document.getElementById("cart-count").classList.remove("hidden");
-      renderCart();
-    }
 
     function renderCart() {
       let html = "";
       let total = 0;
 
-      cart.forEach((item) => {
+      cart.forEach(item => {
         total += item.price;
         html += `
           <div class="flex justify-between border-b py-2">
@@ -297,10 +277,23 @@
           <span>Subtotal</span>
           <span>Rp ${subtotal}</span>
         </div>
+        <div class="mt-2 text-sm text-green-700">
+          <div>Nama: ${buyerName}</div>
+          <div>Alamat: ${buyerAddress}</div>
+          <div>WA: ${buyerWA}</div>
+          <div>GPS: Lat ${buyerLat}, Lon ${buyerLon}</div>
+        </div>
       `;
 
       document.getElementById("cart-items").innerHTML = html;
       document.getElementById("total-price").innerText = subtotal;
+    }
+
+    function addToCart(name, price) {
+      cart.push({ name, price });
+      document.getElementById("cart-count").innerText = cart.length;
+      document.getElementById("cart-count").classList.remove("hidden");
+      renderCart();
     }
 
     document.getElementById("cart-btn").onclick = () => {
@@ -311,40 +304,15 @@
       document.getElementById("cart-panel").classList.remove("open");
     }
 
-    function openCheckout() {
-      document.getElementById("checkout-modal").classList.remove("hidden");
-      ambilLokasiPembeli();
-    }
-    function closeCheckout() {
-      document.getElementById("checkout-modal").classList.add("hidden");
-    }
-
-    qrisBtn.addEventListener("click", () => {
-      if (qrisBtn.disabled) {
-        alert("Harap lengkapi Nama, Alamat, dan Nomor WhatsApp sebelum membayar dengan QRIS.");
-        return;
-      }
-      document.getElementById("qris-modal").classList.remove("hidden");
-    });
-
-    function closeQRIS() {
-      document.getElementById("qris-modal").classList.add("hidden");
-    }
-
     function ambilLokasiPembeli() {
-      if (!navigator.geolocation) {
-        alert("GPS tidak tersedia.");
-        return;
-      }
+      if (!navigator.geolocation) return;
 
-      navigator.geolocation.getCurrentPosition((pos) => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
+      navigator.geolocation.getCurrentPosition(pos => {
+        buyerLat = pos.coords.latitude;
+        buyerLon = pos.coords.longitude;
 
-        const jarak = hitungJarak(lat, lon, TOKO_LAT, TOKO_LON);
-
+        const jarak = hitungJarak(buyerLat, buyerLon, TOKO_LAT, TOKO_LON);
         ongkirValue = Math.round(jarak * 5000);
-        document.getElementById("ongkir-display").innerText = "Rp " + ongkirValue;
 
         renderCart();
       });
@@ -355,64 +323,33 @@
       let dLat = (lat2 - lat1) * Math.PI / 180;
       let dLon = (lon2 - lon1) * Math.PI / 180;
 
-      let a =
-        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      let a = Math.sin(dLat/2)**2 +
+              Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
 
-      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       return R * c;
     }
 
-    function sendWa() {
-      const nama = nameInput.value.trim();
-      const alamat = addressInput.value.trim();
-      const wa = waInput.value.trim();
+    qrisBtn.addEventListener("click", () => {
+      document.getElementById("qris-modal").classList.remove("hidden");
+    });
 
-      if (!nama || !alamat || !wa) {
-        alert("Lengkapi data checkout terlebih dahulu.");
-        return;
-      }
-
-      let cartText = cart.map(i => `- ${i.name} (Rp ${i.price})`).join("\n");
-      const totalHarga = cart.reduce((t, i) => t + i.price, 0);
-      const totalAkhir = totalHarga + ongkirValue;
-
-      const message = `
-Halo Tomodachi Matcha!
-Saya ingin memesan:
-
-${cartText}
-
-Ongkir: Rp ${ongkirValue}
-Total: Rp ${totalAkhir}
-
-Nama: ${nama}
-Alamat: ${alamat}
-Nomor WA: ${wa}
-
-Terima kasih!
-`;
-
-      window.open(`https://wa.me/628XXXXXX?text=${encodeURIComponent(message)}`);
+    function closeQRIS() {
+      document.getElementById("qris-modal").classList.add("hidden");
     }
 
     function getLocation() {
-      if (!navigator.geolocation) {
-        document.getElementById("gps-result").innerText = "Browser tidak mendukung GPS.";
-        return;
-      }
+      if (!navigator.geolocation) return;
 
       navigator.geolocation.getCurrentPosition(pos => {
-        const lat = pos.coords.latitude;
-        const lon = pos.coords.longitude;
-
-        document.getElementById("gps-result").innerHTML =
-          "Lokasi Anda:<br>Lat: " + lat + "<br>Lon: " + lon;
-      }, () => {
-        document.getElementById("gps-result").innerText = "Tidak dapat mengambil lokasi.";
+        buyerLat = pos.coords.latitude;
+        buyerLon = pos.coords.longitude;
+        renderCart();
       });
     }
+
+    // Jalankan ambil lokasi otomatis saat load
+    ambilLokasiPembeli();
   </script>
 
 </body>
