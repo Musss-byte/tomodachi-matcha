@@ -283,7 +283,7 @@ Total: *Rp ${total.toLocaleString()}*
 Metode Pembayaran: ${payment}
       `;
 
-      window.open("https://wa.me/62838795289830?text=" + encodeURIComponent(pesan));
+      window.open("https://wa.me/6283879528983?text=" + encodeURIComponent(pesan));
     }
 
     renderProducts();
