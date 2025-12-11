@@ -33,14 +33,12 @@
 
       <label class="block mb-2 text-sm font-semibold">Nomor Telepon</label>
       <input id="telepon" class="w-full p-2 border rounded mb-3" placeholder="08xxxxxxxx" />
-
       <div class="flex gap-2 mt-4">
         <button id="closeModal" class="w-1/2 bg-gray-300 p-2 rounded">Batal</button>
         <button id="checkoutBtn" class="w-1/2 bg-green-600 text-white p-2 rounded">Pesan via WhatsApp</button>
       </div>
     </div>
   </div>
-
   <script>
     const products = [
       { id: 1, name: "Matcha Premium", price: 45000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
@@ -49,9 +47,7 @@
       { id: 4, name: "Matcha Milk", price: 38000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
       { id: 5, name: "Matcha Ice Cream", price: 25000, img: "https://i.imgur.com/8Km9tLL.jpeg" }
     ];
-
     const cart = [];
-
     function renderProducts() {
       const list = document.getElementById("productList");
       list.innerHTML = products.map(p => `
@@ -104,12 +100,10 @@
       if (cart.length === 0) return alert("Keranjang masih kosong!");
       document.getElementById("checkoutModal").classList.remove("hidden");
     };
-
-    document.getElementById("closeModal").onclick = () => {
+document.getElementById("closeModal").onclick = () => {
       document.getElementById("checkoutModal").classList.add("hidden");
     };
-
-    document.getElementById("checkoutBtn").onclick = () => {
+document.getElementById("checkoutBtn").onclick = () => {
       const nama = document.getElementById("nama").value.trim();
       const alamat = document.getElementById("alamat").value.trim();
       const telepon = document.getElementById("telepon").value.trim();
