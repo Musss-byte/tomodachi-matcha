@@ -64,7 +64,7 @@
     </div>
     <!-- PRODUK 4 -->
     <div class="bg-white p-4 rounded-xl shadow border">
-      <img src="https://share.google/I0V9oLXAjTgPvZ8LJ" class="rounded-lg w-full h-40 object-cover" />
+      <img src="Matcha Halzelnut.jpg" class="rounded-lg w-full h-40 object-cover" />
       <h4 class="font-bold mt-2">Matcha Tiramisu</h4>
       <p class="text-green-700">Rp 22.000</p>
       <button onclick="addToCart('Matcha Tiramisu',22000)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg w-full">Tambah</button>
