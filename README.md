@@ -117,7 +117,7 @@
 
     <div class="max-w-xl mx-auto mt-4 rounded-xl overflow-hidden shadow-lg border border-green-200">
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3962.597037968024!2d106.812854!3d-6.563240!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c9eba0f32ef7%3A0x7c8e3f3bb4a7ed2d!2sJl.%20Pembangunan%2C%20Kedung%20Halang%2C%20Bogor%20Utara%2C%20Kota%20Bogor!5e0!3m2!1sid!2sid!4v1700000000001!"
+        src="https://goo.gl/maps/k4Lo4xda9Km4BYyV6!"
         width="100%"
         height="300"
         style="border:0;"
