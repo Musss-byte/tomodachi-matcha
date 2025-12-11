@@ -112,7 +112,7 @@
     <p class="text-green-800">WhatsApp: 0812-3456-7890</p>
     <p class="text-green-800">Email: hello@tomodachimatcha.com</p>
 
-    <!-- GOOGLE MAPS (Lokasi Bisnis Kamu) -->
+    <!-- GOOGLE MAPS (Jl Pembangunan RT 02 RW 05 Kedung Halang Bogor Utara Kota Bogor) -->
     <h3 class="font-bold text-green-900 text-lg mt-10">Lokasi Kami</h3>
 
     <div class="max-w-xl mx-auto mt-4 rounded-xl overflow-hidden shadow-lg border border-green-200">
