@@ -106,7 +106,7 @@
   <!-- CONTACT -->
   <section class="px-6 mt-10">
     <h3 class="text-xl font-bold">Kontak Kami</h3>
-    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/628XXXXXX" class="text-green-700 underline">Hubungi Kami</a></p>
+    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/6283879528983" class="text-green-700 underline">Hubungi Kami</a></p>
     <p>📍 Bogor Utara, Kota Bogor</p>
   </section>
 
@@ -256,7 +256,7 @@ function sendWa(){
 
   let message=`Halo Tomodachi Matcha!\nSaya ingin memesan:\n${cartText}\nOngkir: Rp ${ongkirValue}\nTotal: Rp ${totalAkhir}\nNama: ${nama}\nAlamat: ${alamat}\nNo WA: ${wa}\nMetode: ${pembayaranMetode}`;
   if(buktiFoto){ message+="\nBukti: "+buktiFoto.name; }
-  window.open(`https://wa.me/628XXXXXX?text=${encodeURIComponent(message)}`);
+  window.open(`https://wa.me/6283879528983?text=${encodeURIComponent(message)}`);
 }
 
 function ambilLokasiPembeli(){
