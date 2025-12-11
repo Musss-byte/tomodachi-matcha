@@ -1,373 +1,161 @@
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tomodachi Matcha — Premium Store</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tomodachi Matcha</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Heroicons -->
+  <script src="https://unpkg.com/heroicons@2.0.18/dist/heroicons.js"></script>
 
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #cfe8cf, #b5ddb5, #9fce9f);
-    }
-    .glass {
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.4);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      background-color: #f6fdf7;
     }
   </style>
 </head>
 
-<body class="min-h-screen">
+<body class="text-green-900">
 
   <!-- NAVBAR -->
-  <nav class="glass fixed top-0 left-0 w-full z-50 p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold text-green-900">🍵 Tomodachi Matcha</h1>
-    <button onclick="toggleCart()" class="px-4 py-2 bg-green-700 text-white rounded-lg">
-      Keranjang <span id="cart-count">(0)</span>
-    </button>
+  <nav class="flex items-center justify-between py-4 px-6 bg-white shadow">
+    <div class="flex items-center gap-3">
+      <img src="logo.png" alt="Logo" class="h-10 w-10 rounded-full">
+      <h1 class="text-2xl font-bold text-green-900">Tomodachi Matcha</h1>
+    </div>
+
+    <div class="flex items-center gap-6">
+      <a href="#produk" class="font-semibold">Produk</a>
+
+      <!-- KERANJANG DIGANTI IKON -->
+      <button id="cart-btn" class="relative">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8"
+          stroke="currentColor" class="w-7 h-7 text-green-900">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M2.25 3h1.386c.51 0 .955.343 1.087.836l.383 1.437M7.5 
+              14.25a3 3 0 1 0 0 6 3 3 0 0 0 0-6Zm9 3a3 3 0 1 1-6 
+              0m6 0a3 3 0 1 0 6 0m-6 
+              0H9m12-3.75-1.5-6.75H4.106M20.25 
+              10.5H6.857" />
+        </svg>
+
+        <span id="cart-count"
+          class="absolute -top-1 -right-1 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full hidden">0</span>
+      </button>
+    </div>
   </nav>
 
-  <!-- CONTENT WRAPPER -->
-  <div class="pt-24 pb-20 px-4 max-w-5xl mx-auto">
+  <!-- HEADER -->
+  <header class="text-center py-10">
+    <h2 class="text-3xl font-bold text-green-800">Selamat Datang di Tomodachi Matcha</h2>
+    <p class="mt-2 text-green-700">Matcha premium, rasa original Jepang 🍵</p>
+  </header>
 
-    <!-- PRODUK GRID -->
-    <h2 class="text-2xl font-bold text-green-900 mb-4">Produk Kami</h2>
+  <!-- PRODUK -->
+  <section id="produk" class="px-6">
+    <h3 class="text-2xl font-bold mb-4">Produk Kami</h3>
 
-    <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
-  </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
 
-  <!-- KERANJANG SLIDE PANEL -->
-  <div id="cart-panel"
-       class="fixed top-0 right-0 w-80 h-full glass transform translate-x-full transition-all duration-300 z-50 p-4 overflow-y-auto">
-    
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-bold">Keranjang</h2>
-      <button onclick="toggleCart()" class="text-red-500 text-xl">✖</button>
+      <!-- PRODUCT EXAMPLE -->
+      <div class="bg-white p-4 rounded-xl shadow border">
+        <img src="produk1.jpg" class="rounded-lg w-full h-40 object-cover" />
+        <h4 class="font-bold mt-2">Matcha Latte</h4>
+        <p class="text-green-700">Rp 18.000</p>
+        <button onclick="addToCart('Matcha Latte', 18000)"
+          class="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg w-full">Tambah</button>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow border">
+        <img src="produk2.jpg" class="rounded-lg w-full h-40 object-cover" />
+        <h4 class="font-bold mt-2">Matcha Original</h4>
+        <p class="text-green-700">Rp 15.000</p>
+        <button onclick="addToCart('Matcha Original', 15000)"
+          class="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg w-full">Tambah</button>
+      </div>
+
     </div>
+  </section>
 
-    <div id="cart-items" class="space-y-3"></div>
+  <!-- AMBIL LOKASI OTOMATIS -->
+  <section class="px-6 mt-10">
+    <h3 class="text-xl font-bold mb-3">Ambil Lokasi Otomatis (GPS)</h3>
 
-    <hr class="my-4">
+    <button onclick="getLocation()"
+      class="bg-green-700 text-white px-5 py-2 rounded-lg active:scale-95 shadow">
+      Ambil Lokasi Saya 📍
+    </button>
 
-    <!-- KUPON -->
-    <div>
-      <label class="font-semibold">Kupon Diskon:</label>
-      <input id="coupon" type="text" placeholder="Masukkan kupon"
-             class="w-full mt-1 px-3 py-2 border rounded">
-      <button onclick="applyCoupon()"
-              class="w-full mt-2 bg-green-700 text-white py-2 rounded">Gunakan Kupon</button>
-      <p id="coupon-info" class="text-sm text-green-700 mt-1"></p>
+    <p class="mt-2 text-green-700" id="gps-result"></p>
+  </section>
+
+  <!-- GOOGLE MAPS LOKASI BISNIS -->
+  <section class="px-6 mt-10">
+    <h3 class="text-xl font-bold">Lokasi Bisnis Kami</h3>
+    <p class="text-green-700">Jl Pembangunan RT 02 RW 05 Kedung Halang, Bogor Utara</p>
+
+    <div class="max-w-xl mt-4 rounded-xl overflow-hidden shadow-lg border border-green-200">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3967.31372696543!2d106.8279876!3d-6.562045199999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69c9c81cecc7df%3A0x8a83b2e1fa89bbf0!2sKedung%20Halang%2C%20Bogor%20Utara!5e0!3m2!1sid!2sid!4v1700000000000!5m2!1sid!2sid"
+        width="100%" height="300" allowfullscreen loading="lazy"></iframe>
     </div>
+  </section>
 
-    <hr class="my-4">
+  <!-- ABOUT -->
+  <section class="px-6 mt-10">
+    <h3 class="text-xl font-bold">Tentang Kami</h3>
+    <p class="text-green-700 mt-2">
+      Tomodachi Matcha menghadirkan minuman matcha premium dengan cita rasa autentik Jepang.
+      Dibuat dari bahan alami tanpa pengawet.
+    </p>
+  </section>
 
-    <!-- ALAMAT -->
-    <h3 class="font-bold mb-2">Alamat Pengiriman</h3>
+  <!-- CONTACT -->
+  <section class="px-6 mt-10">
+    <h3 class="text-xl font-bold">Kontak Kami</h3>
 
-    <input id="nama" type="text" placeholder="Nama Lengkap"
-           class="w-full mb-2 px-3 py-2 border rounded">
-    <input id="telepon" type="text" placeholder="Nomor Telepon"
-           class="w-full mb-2 px-3 py-2 border rounded">
-    <textarea id="alamat" placeholder="Alamat Lengkap"
-              class="w-full mb-2 px-3 py-2 border rounded"></textarea>
-
-    <input id="jarak" type="number" placeholder="Jarak (KM)"
-           class="w-full mb-2 px-3 py-2 border rounded">
-
-    <!-- AMBIL LOKASI OTOMATIS -->
-    <button onclick="ambilLokasi()" class="w-full bg-green-800 text-white py-2 rounded mb-4">
-      📍 Ambil Lokasi Otomatis (GPS)
-    </button>
-    <p id="lokasi-info" class="text-sm text-green-800 mb-4"></p>
-
-    <!-- METODE PEMBAYARAN -->
-    <label class="font-semibold">Metode Pembayaran:</label>
-    <select id="payment" class="w-full px-3 py-2 border rounded mt-2">
-      <option value="COD">COD (Bayar di Tempat)</option>
-      <option value="TRANSFER">Transfer Bank</option>
-    </select>
-
-    <hr class="my-4">
-
-    <!-- TOTAL -->
-    <div id="summary" class="space-y-1 text-green-900 font-medium"></div>
-
-    <button onclick="checkout()"
-            class="w-full mt-4 bg-green-700 text-white py-3 rounded-lg text-lg font-bold">
-      Checkout via WhatsApp
-    </button>
-  </div>
+    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/628XXXXXX" class="text-green-700 underline">Hubungi Kami</a></p>
+    <p>📍 Bogor Utara, Kota Bogor</p>
+  </section>
 
   <!-- FOOTER -->
-  <footer class="mt-16 glass text-center py-6">
-    <h3 class="font-bold text-green-900 text-lg">Tentang Kami</h3>
-    <p class="max-w-xl mx-auto text-green-800 mt-2 px-6">
-      Tomodachi Matcha adalah brand matcha premium dengan kualitas terbaik, 
-      menghadirkan cita rasa Jepang autentik serta manfaat kesehatan.
-    </p>
-
-    <h3 class="font-bold text-green-900 text-lg mt-6">Contact</h3>
-    <p class="text-green-800">WhatsApp: 0812-3456-7890</p>
-    <p class="text-green-800">Email: hello@tomodachimatcha.com</p>
-
-    <!-- GOOGLE MAPS (Jembatan ikrar No.rt 02, RT.rw 05/RW.05, Kedunghalang, Kec. Bogor Utara, Kota Bogor, Jawa Barat) -->
-    <h3 class="font-bold text-green-900 text-lg mt-10">Lokasi Kami</h3>
-
-    <div class="max-w-xl mx-auto mt-4 rounded-xl overflow-hidden shadow-lg border border-green-200">
-      <iframe
-        src="https://maps.app.goo.gl/8NwqZUEbADsW36tA7!"
-        width="100%"
-        height="300"
-        style="border:0;"
-        allowfullscreen=""
-        loading="lazy">
-      </iframe>
-    </div>
-
-    <p class="text-green-900 mt-6 text-sm">© 2025 Tomodachi Matcha. All Rights Reserved.</p>
+  <footer class="text-center py-10 mt-10 text-green-800">
+    <p>© 2025 Tomodachi Matcha. All Rights Reserved.</p>
   </footer>
-
 
   <!-- SCRIPT -->
   <script>
-    /* ============================================
-       PRODUK
-    ============================================ */
-    const products = [
-      { id: 1, name: "Matcha Premium 100gr", price: 55000, img: "https://i.imgur.com/e0S1ZfP.jpeg" },
-      { id: 2, name: "Matcha Latte Mix", price: 45000, img: "https://i.imgur.com/5ZQqR7a.jpeg" },
-      { id: 3, name: "Matcha Ceremonial", price: 120000, img: "https://i.imgur.com/nXPQm6C.jpeg" },
-      { id: 4, name: "Hojicha Powder", price: 38000, img: "https://i.imgur.com/5ZQeZr0.jpeg" },
-      { id: 5, name: "Matcha Cookies", price: 30000, img: "https://i.imgur.com/UlgL6c3.jpeg" }
-    ];
+    let cart = [];
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-    function renderProducts() {
-      const container = document.getElementById("product-list");
-      container.innerHTML = products.map(p => `
-        <div class="glass rounded-xl p-4">
-          <img src="${p.img}" class="w-full h-40 object-cover rounded-lg">
-          <h3 class="text-lg font-bold mt-2 text-green-900">${p.name}</h3>
-          <p class="text-green-800 font-semibold mb-2">Rp ${p.price.toLocaleString()}</p>
-          <button onclick="addToCart(${p.id})"
-                  class="w-full bg-green-700 text-white py-2 rounded">Tambah</button>
-        </div>
-      `).join("");
+    function addToCart(n, p) {
+      cart.push({ name: n, price: p });
+      document.getElementById("cart-count").innerText = cart.length;
+      document.getElementById("cart-count").classList.remove("hidden");
+      alert(n + " ditambahkan ke keranjang!");
     }
 
-    /* ============================================
-       KERANJANG
-    ============================================ */
-    function toggleCart() {
-      document.getElementById("cart-panel").classList.toggle("translate-x-full");
-      renderCart();
-    }
-
-    function addToCart(id) {
-      const item = cart.find(i => i.id === id);
-      if (item) item.qty++;
-      else cart.push({ ...products.find(p => p.id === id), qty: 1 });
-
-      saveCart();
-      renderCart();
-    }
-
-    function updateQty(id, delta) {
-      const item = cart.find(i => i.id === id);
-      if (!item) return;
-      
-      item.qty += delta;
-      if (item.qty <= 0) cart = cart.filter(i => i.id !== id);
-
-      saveCart();
-      renderCart();
-    }
-
-    function saveCart() {
-      localStorage.setItem("cart", JSON.stringify(cart));
-    }
-
-    /* ============================================
-       KUPON
-    ============================================ */
-    const coupons = {
-      MATCHA100: { type: "percent", value: 10, min: 100000 },
-      MATCHA20: { type: "percent", value: 20, min: 150000 },
-      HEMAT5: { type: "flat", value: 5000, min: 0 }
-    };
-
-    let appliedCoupon = null;
-
-    function applyCoupon() {
-      const code = document.getElementById("coupon").value.toUpperCase();
-      if (!coupons[code]) {
-        document.getElementById("coupon-info").innerText = "Kupon tidak valid.";
-        appliedCoupon = null;
-      } else {
-        appliedCoupon = coupons[code];
-        document.getElementById("coupon-info").innerText = "Kupon diterapkan!";
-      }
-      renderCart();
-    }
-
-    /* ============================================
-       GPS → Hitung Jarak ke Lokasi Bisnis
-    ============================================ */
-
-    // Koordinat Toko
-    const toko = {
-      lat: -6,5528629, 
-      lng: 106,8132911 
-    };
-
-    // Fungsi hitung jarak (Haversine)
-    function hitungJarak(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLon = (lon2 - lon1) * Math.PI / 180;
-
-      const a =
-        Math.sin(dLat/2) * Math.sin(dLat/2) +
-        Math.cos(lat1 * Math.PI / 180) *
-        Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon/2) * Math.sin(dLon/2);
-
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
-    }
-
-    function ambilLokasi() {
+    // GPS
+    function getLocation() {
       if (!navigator.geolocation) {
-        alert("Browser Anda tidak mendukung GPS.");
+        document.getElementById("gps-result").innerText = "Browser tidak mendukung GPS.";
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          const lat = pos.coords.latitude;
-          const lng = pos.coords.longitude;
+      navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
 
-          const jarak = hitungJarak(lat, lng, toko.lat, toko.lng).toFixed(2);
-
-          document.getElementById("jarak").value = jarak;
-          document.getElementById("lokasi-info").innerText =
-            `Lokasi ditemukan! Estimasi jarak: ${jarak} KM`;
-
-          renderCart();
-        },
-        () => alert("Gagal mengambil lokasi. Izinkan akses GPS.")
-      );
+        document.getElementById("gps-result").innerHTML =
+          "Lokasi Anda: <br>Latitude: " + lat + "<br>Longitude: " + lon;
+      }, () => {
+        document.getElementById("gps-result").innerText = "Tidak dapat mengambil lokasi.";
+      });
     }
-
-    /* ============================================
-       RINGKASAN TOTAL
-    ============================================ */
-    function renderCart() {
-      const cartDiv = document.getElementById("cart-items");
-      const summary = document.getElementById("summary");
-
-      if (cart.length === 0) {
-        cartDiv.innerHTML = `<p class="text-gray-600">Keranjang kosong.</p>`;
-        summary.innerHTML = "";
-        document.getElementById("cart-count").innerText = "(0)";
-        return;
-      }
-
-      cartDiv.innerHTML = cart.map(i => `
-        <div class="flex justify-between items-center">
-          <div>
-            <p class="font-semibold text-green-900">${i.name}</p>
-            <p class="text-sm">Rp ${i.price.toLocaleString()}</p>
-            <p class="text-sm">Subtotal: Rp ${(i.price * i.qty).toLocaleString()}</p>
-          </div>
-
-          <div class="flex items-center space-x-2">
-            <button onclick="updateQty(${i.id}, -1)" class="px-2 bg-red-500 text-white rounded">-</button>
-            <span>${i.qty}</span>
-            <button onclick="updateQty(${i.id}, 1)" class="px-2 bg-green-700 text-white rounded">+</button>
-          </div>
-        </div>
-      `).join("");
-
-      const subtotal = cart.reduce((a, b) => a + b.price * b.qty, 0);
-
-      // Ongkir per km (Rp 2.000/km)
-      const jarak = parseFloat(document.getElementById("jarak").value || 0);
-      const ongkir = jarak * 2000;
-
-      // Diskon
-      let diskon = 0;
-      if (appliedCoupon && subtotal >= appliedCoupon.min) {
-        diskon = appliedCoupon.type === "percent"
-          ? subtotal * (appliedCoupon.value / 100)
-          : appliedCoupon.value;
-      }
-
-      const total = subtotal + ongkir - diskon;
-
-      summary.innerHTML = `
-        <p>Subtotal: <span class="float-right">Rp ${subtotal.toLocaleString()}</span></p>
-        <p>Ongkir: <span class="float-right">Rp ${ongkir.toLocaleString()}</span></p>
-        <p>Diskon: <span class="float-right">- Rp ${diskon.toLocaleString()}</span></p>
-        <hr class="my-2">
-        <p class="font-bold">Total: <span class="float-right">Rp ${total.toLocaleString()}</span></p>
-      `;
-
-      document.getElementById("cart-count").innerText = `(${cart.length})`;
-    }
-
-    /* ============================================
-       CHECKOUT
-    ============================================ */
-    function checkout() {
-      const nama = document.getElementById("nama").value;
-      const tel = document.getElementById("telepon").value;
-      const alamat = document.getElementById("alamat").value;
-      const jarak = document.getElementById("jarak").value;
-      const payment = document.getElementById("payment").value;
-
-      if (!nama || !tel || !alamat) {
-        alert("Lengkapi data pengiriman.");
-        return;
-      }
-
-      const subtotal = cart.reduce((a, b) => a + b.price * b.qty, 0);
-      const ongkir = jarak * 2000;
-      let diskon = 0;
-
-      if (appliedCoupon && subtotal >= appliedCoupon.min)
-        diskon = appliedCoupon.type === "percent"
-          ? subtotal * (appliedCoupon.value / 100)
-          : appliedCoupon.value;
-
-      const total = subtotal + ongkir - diskon;
-
-      const pesan = `
-*Checkout Tomodachi Matcha*
-Nama: ${nama}
-Telepon: ${tel}
-Alamat: ${alamat}
-
-Pesanan:
-${cart.map(i => `- ${i.name} x${i.qty}`).join("\n")}
-
-Subtotal: Rp ${subtotal.toLocaleString()}
-Ongkir: Rp ${ongkir.toLocaleString()}
-Diskon: Rp ${diskon.toLocaleString()}
-Total: *Rp ${total.toLocaleString()}*
-
-Metode Pembayaran: ${payment}
-      `;
-
-      window.open("https://wa.me/6281234567890?text=" + encodeURIComponent(pesan));
-    }
-
-    renderProducts();
-    renderCart();
   </script>
 
 </body>
+
 </html>
