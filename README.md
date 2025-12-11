@@ -34,6 +34,9 @@
 
 </div>
 
+<div id="cartOverlay"
+     class="fixed inset-0 bg-black/40 hidden z-[55]"></div>
+     
 <!-- CART SIDEBAR -->
 <div id="cartSidebar" class="fixed top-0 right-0 w-80 h-full bg-white shadow-2xl p-5 transform translate-x-full transition-all duration-300 z-[60] overflow-y-auto">
   <div class="flex items-center justify-between mb-3">
