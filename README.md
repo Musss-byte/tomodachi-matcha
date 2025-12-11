@@ -13,8 +13,7 @@
 
   <main class="p-4 max-w-4xl mx-auto">
     <h2 class="text-xl font-semibold mb-4">Produk</h2>
-    <div id="productList" class="grid grid-cols-2 gap-4"></div>
-
+    <div id="productList" class="grid grid-cols-2 gap-4"></div> 
     <h2 class="text-xl font-semibold mt-8 mb-4">Keranjang</h2>
     <div id="cartList" class="space-y-2"></div>
     <button id="openCheckout" class="mt-4 w-full bg-green-600 text-white p-3 rounded-lg">Checkout</button>
@@ -26,8 +25,7 @@
       <h2 class="text-xl font-bold mb-4">Checkout</h2>
 
       <label class="block mb-2 text-sm font-semibold">Nama</label>
-      <input id="nama" class="w-full p-2 border rounded mb-3" placeholder="Masukkan nama" />
-
+      <input id="nama" class="w-full p-2 border rounded mb-3" placeholder="Masukkan nama" /> 
       <label class="block mb-2 text-sm font-semibold">Alamat</label>
       <textarea id="alamat" class="w-full p-2 border rounded mb-3" placeholder="Masukkan alamat"></textarea>
 
@@ -40,29 +38,17 @@
       </div>
     </div>
   </div>
-
-  <script>
-    const products = [
-      { id: 1, name: "Matcha Premium", price: 45000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
-      { id: 2, name: "Matcha Latte", price: 35000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
-      { id: 3, name: "Matcha Cookies", price: 30000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
-      { id: 4, name: "Matcha Milk", price: 38000, img: "https://i.imgur.com/8Km9tLL.jpeg" },
-      { id: 5, name: "Matcha Ice Cream", price: 25000, img: "https://i.imgur.com/8Km9tLL.jpeg" }
-    ];
-
+  <script> const products=[ { id: 1, name: "Matcha Premium", price: 45000, img: "https://i.imgur.com/8Km9tLL.jpeg" }, { id: 2, name: "Matcha Latte", price: 35000,img:"https://i.imgur.com/8Km9tLL.jpeg" },{ id: 3, name: "Matcha Cookies",price:30000,img:"https://i.imgur.com/8Km9tLL.jpeg" } { id: 4, name: "MatchaMilk",price:38000,img:"https://i.imgur.com/8Km9tLL.jpeg" },{ id: 5, name: "Matcha Ice Cream", price: 25000,img:"https://i.imgur.com/8Km9tLL.jpeg" } ]; 
     const cart = [];
-
     function renderProducts() {
       const list = document.getElementById("productList");
-      list.innerHTML = products.map(p => `
-        <div class='bg-white p-3 rounded shadow'>
+      list.innerHTML = products.map(p => `  <div class='bg-white p-3 rounded shadow'>
           <img src='${p.img}' class='w-full rounded mb-2'/>
           <div class='font-semibold'>${p.name}</div>
           <div class='mb-2'>Rp ${p.price.toLocaleString()}</div>
           <button onclick='addToCart(${p.id})' class='bg-green-600 text-white px-3 py-2 rounded w-full'>Tambah</button>
         </div>`).join("");
     }
-
     function renderCart() {
       const list = document.getElementById("cartList");
       if (cart.length === 0) {
