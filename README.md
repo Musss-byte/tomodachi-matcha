@@ -103,8 +103,8 @@
     </p>
 
     <h3 class="font-bold text-green-900 text-lg mt-6">Contact</h3>
-    <p class="text-green-800">WhatsApp: 0812-3456-7890</p>
-    <p class="text-green-800">Email: hello@tomodachimatcha.com</p>
+    <p class="text-green-800">WhatsApp: 0838-7952-8983</p>
+    <p class="text-green-800">Email: Tomodachimatcha@gmail.com</p>
 
     <p class="text-green-900 mt-6 text-sm">© 2025 Tomodachi Matcha. All Rights Reserved.</p>
   </footer>
@@ -283,7 +283,7 @@ Total: *Rp ${total.toLocaleString()}*
 Metode Pembayaran: ${payment}
       `;
 
-      window.open("https://wa.me/6281234567890?text=" + encodeURIComponent(pesan));
+      window.open("https://wa.me/62838795289830?text=" + encodeURIComponent(pesan));
     }
 
     renderProducts();
