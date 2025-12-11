@@ -1,244 +1,360 @@
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tomodachi Matcha — Single File</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tomodachi Matcha — Toko</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-green-50 text-gray-900">
-  <header class="p-4 bg-green-600 text-white shadow flex items-center gap-3">
-    <img src="https://i.imgur.com/8Km9tLL.jpeg" class="w-10 h-10 rounded-full border" />
-    <h1 class="text-2xl font-bold">Tomodachi Matcha</h1>
+<body class="bg-green-50 text-gray-900 min-h-screen flex flex-col">
+
+  <!-- HEADER -->
+  <header class="bg-green-600 text-white shadow-md">
+    <div class="max-w-4xl mx-auto flex items-center gap-3 p-4">
+      <img src="https://i.imgur.com/8Km9tLL.jpeg" alt="logo" class="w-12 h-12 rounded-full border bg-white/20">
+      <div>
+        <h1 class="text-xl font-bold">Tomodachi Matcha</h1>
+        <p class="text-sm opacity-90">Matcha & minuman hijau — pesan cepat lewat WhatsApp</p>
+      </div>
+      <div class="ml-auto text-sm" id="cart-mini">Keranjang: <span id="cart-count">0</span> item</div>
+    </div>
   </header>
 
-  <main class="p-4 max-w-4xl mx-auto">
-    <h2 class="text-xl font-semibold mb-4">Produk</h2>
-    <div id="productList" class="grid grid-cols-2 gap-4"></div> 
-    <h2 class="text-xl font-semibold mt-8 mb-4">Keranjang</h2>
-    <div id="cartList" class="space-y-2"></div>
-    <button id="openCheckout" class="mt-4 w-full bg-green-600 text-white p-3 rounded-lg">Checkout</button>
-  </main>
+  <!-- MAIN -->
+  <main class="max-w-4xl mx-auto flex-1 w-full p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-  <!-- MODAL CHECKOUT -->
-  <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4">
-    <div class="bg-white p-6 rounded-lg w-full max-w-md shadow">
-      <h2 class="text-xl font-bold mb-4">Checkout</h2>
+      <!-- PRODUCTS -->
+      <section>
+        <h2 class="text-2xl font-semibold mb-4">Produk</h2>
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+      </section>
 
-      <label class="block mb-2 text-sm font-semibold">Nama</label>
-      <input id="nama" class="w-full p-2 border rounded mb-3" placeholder="Masukkan nama" /> 
-      <label class="block mb-2 text-sm font-semibold">Alamat</label>
-      <textarea id="alamat" class="w-full p-2 border rounded mb-3" placeholder="Masukkan alamat"></textarea>
+      <!-- CART & CHECKOUT PANEL -->
+      <aside class="bg-white rounded-2xl p-4 shadow-md sticky top-6">
+        <h3 class="text-lg font-bold mb-2">Keranjang</h3>
+        <div id="cartList" class="space-y-3 max-h-64 overflow-auto mb-3">
+          <div class="text-gray-500">Keranjang kosong — tambahkan produk.</div>
+        </div>
 
-      <label class="block mb-2 text-sm font-semibold">Nomor Telepon</label>
-      <input id="telepon" class="w-full p-2 border rounded mb-3" placeholder="08xxxxxxxx" />
+        <div class="border-t pt-3 space-y-2">
+          <div class="flex justify-between"><span>Subtotal</span><span id="subtotalBox">Rp 0</span></div>
+          <div class="flex justify-between"><span>Diskon</span><span id="discountBox">Rp 0</span></div>
+          <div class="flex justify-between items-center">
+            <span>Kupon</span>
+            <div class="flex gap-2">
+              <input id="couponInput" class="border rounded px-2 py-1 text-sm" placeholder="Masukkan kode" />
+              <button id="applyCouponBtn" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Terapkan</button>
+            </div>
+          </div>
 
-      <div class="flex gap-2 mt-4">
-        <button id="closeModal" class="w-1/2 bg-gray-300 p-2 rounded">Batal</button>
-        <button id="checkoutBtn" class="w-1/2 bg-green-600 text-white p-2 rounded">Pesan via WhatsApp</button>
+          <div class="mt-2">
+            <label class="block text-sm font-medium mb-1">Kota (pengiriman)</label>
+            <select id="citySelect" class="w-full border rounded px-3 py-2 text-sm">
+              <option value="">Pilih kota</option>
+              <option value="Jakarta">Jakarta</option>
+              <option value="Bandung">Bandung</option>
+              <option value="Surabaya">Surabaya</option>
+              <option value="Medan">Medan</option>
+              <option value="Makassar">Makassar</option>
+            </select>
+          </div>
+
+          <div class="flex justify-between"><span>Ongkir</span><span id="ongkirBox">Rp 0</span></div>
+
+          <div class="flex justify-between text-xl font-bold pt-2 border-t">
+            <span>Total</span><span id="totalBox">Rp 0</span>
+          </div>
+
+          <div class="mt-3">
+            <label class="block text-sm font-medium mb-1">Metode Pembayaran</label>
+            <div class="flex gap-2">
+              <label class="flex items-center gap-2"><input type="radio" name="payment" value="COD" checked> COD</label>
+              <label class="flex items-center gap-2"><input type="radio" name="payment" value="Transfer"> Transfer Bank</label>
+            </div>
+          </div>
+
+          <button id="openCheckoutBtn" class="mt-4 w-full bg-green-700 text-white py-2 rounded-lg font-semibold">Checkout</button>
+          <button id="clearCartBtn" class="mt-2 w-full bg-red-100 text-red-700 py-2 rounded-lg text-sm">Kosongkan Keranjang</button>
+        </div>
+      </aside>
+    </div>
+
+    <!-- CHECKOUT MODAL -->
+    <div id="checkoutModal" class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4 z-50">
+      <div class="bg-white rounded-lg w-full max-w-md p-5 shadow-lg">
+        <h3 class="text-xl font-bold mb-3">Form Checkout</h3>
+        <div class="space-y-2">
+          <label class="text-sm font-medium">Nama</label>
+          <input id="custName" class="w-full border rounded px-3 py-2" placeholder="Nama lengkap">
+
+          <label class="text-sm font-medium">Alamat</label>
+          <textarea id="custAddress" class="w-full border rounded px-3 py-2" placeholder="Alamat lengkap"></textarea>
+
+          <label class="text-sm font-medium">No. Telepon</label>
+          <input id="custPhone" class="w-full border rounded px-3 py-2" placeholder="08xxxxxxxx">
+
+          <div class="text-sm text-gray-600">Periksa kembali data sebelum melanjutkan.</div>
+
+          <div class="flex gap-2 mt-3">
+            <button id="closeModalBtn" class="flex-1 border rounded py-2">Batal</button>
+            <button id="confirmCheckoutBtn" class="flex-1 bg-green-700 text-white rounded py-2">Kirim via WhatsApp</button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <script> const products=[ { id: 1, name: "Matcha Premium", price: 45000, img: "https://i.imgur.com/8Km9tLL.jpeg" }, { id: 2, name: "Matcha Latte", price: 35000,img:"https://i.imgur.com/8Km9tLL.jpeg" },{ id: 3, name: "Matcha Cookies",price:30000,img:"https://i.imgur.com/8Km9tLL.jpeg" } { id: 4, name: "MatchaMilk",price:38000,img:"https://i.imgur.com/8Km9tLL.jpeg" },{ id: 5, name: "Matcha Ice Cream", price: 25000,img:"https://i.imgur.com/8Km9tLL.jpeg" } ]; 
-    const cart = [];
-    function renderProducts() {
-      const list = document.getElementById("productList");
-      list.innerHTML = products.map(p => `  <div class='bg-white p-3 rounded shadow'>
-          <img src='${p.img}' class='w-full rounded mb-2'/>
-          <div class='font-semibold'>${p.name}</div>
-          <div class='mb-2'>Rp ${p.price.toLocaleString()}</div>
-          <button onclick='addToCart(${p.id})' class='bg-green-600 text-white px-3 py-2 rounded w-full'>Tambah</button>
-        </div>`).join("");
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="text-center py-4 text-sm text-gray-600">
+    © <span id="year"></span> Tomodachi Matcha — dibuat dengan ❤️
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // ====== KONFIG ======
+    const SHOP_PHONE = "6281234567890"; // <<-- GANTI NOMOR WA tujuan (format internasional, tanpa '+')
+    const PRODUCTS = [
+      { id: 1, name: "Matcha Premium 100g", price: 85000, img: "https://images.unsplash.com/photo-1521305916504-4a1121188589?w=800&q=80" },
+      { id: 2, name: "Matcha Latte Mix 200g", price: 120000, img: "https://images.unsplash.com/photo-1612874742651-d9f91b3d60c8?w=800&q=80" },
+      { id: 3, name: "Gift Box — Matcha Set", price: 250000, img: "https://images.unsplash.com/photo-1546820389-44d77e1f3b31?w=800&q=80" },
+      { id: 4, name: "Matcha Kit 150g", price: 95000, img: "https://images.unsplash.com/photo-1611080629006-9c8f3dfe3b09?w=800&q=80" },
+      { id: 5, name: "Matcha Cookies (pak)", price: 50000, img: "https://images.unsplash.com/photo-1604908177166-5b2c9bd8b0f2?w=800&q=80" }
+    ];
+    const CITY_SHIPPING = { "Jakarta":10000, "Bandung":12000, "Surabaya":15000, "Medan":18000, "Makassar":20000 };
+
+    // ====== STATE ======
+    let cart = []; // each item: {id,name,price,img,qty}
+    let activeCoupon = null;
+
+    // ====== UTIL ======
+    const currency = (v) => "Rp " + Number(v).toLocaleString("id-ID");
+
+    // ====== DOM REFERENCES ======
+    const productGrid = document.getElementById("productGrid");
+    const cartList = document.getElementById("cartList");
+    const subtotalBox = document.getElementById("subtotalBox");
+    const discountBox = document.getElementById("discountBox");
+    const ongkirBox = document.getElementById("ongkirBox");
+    const totalBox = document.getElementById("totalBox");
+    const cartCount = document.getElementById("cart-count");
+    const openCheckoutBtn = document.getElementById("openCheckoutBtn");
+    const checkoutModal = document.getElementById("checkoutModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const confirmCheckoutBtn = document.getElementById("confirmCheckoutBtn");
+    const applyCouponBtn = document.getElementById("applyCouponBtn");
+    const couponInput = document.getElementById("couponInput");
+    const citySelect = document.getElementById("citySelect");
+    const clearCartBtn = document.getElementById("clearCartBtn");
+
+    // ====== INIT ======
+    document.getElementById("year").textContent = new Date().getFullYear();
+    loadCart();
+    renderProducts();
+    renderCart();
+
+    // ====== RENDER PRODUCTS ======
+    function renderProducts(){
+      productGrid.innerHTML = PRODUCTS.map(p => `
+        <article class="bg-white p-3 rounded-xl shadow flex flex-col">
+          <img src="${p.img}" alt="${p.name}" class="rounded-xl object-cover h-40 w-full mb-3">
+          <h4 class="font-semibold">${p.name}</h4>
+          <div class="text-sm text-gray-600 mb-3">${currency(p.price)}</div>
+          <div class="mt-auto">
+            <button class="w-full bg-green-700 text-white rounded py-2" onclick="addToCart(${p.id})">Tambah</button>
+          </div>
+        </article>
+      `).join("");
     }
-    function renderCart() {
-      const list = document.getElementById("cartList");
-      if (cart.length === 0) {
-        list.innerHTML = "<div class='text-gray-500'>Keranjang kosong</div>";
-        document.getElementById("subtotalBox").innerHTML = "Rp 0";
-        document.getElementById("totalBox").innerHTML = "Rp 0";
+
+    // ====== CART: CRUD ======
+    function addToCart(id){
+      const prod = PRODUCTS.find(p => p.id === id);
+      if(!prod) return;
+      const found = cart.find(i => i.id === id);
+      if(found) found.qty += 1;
+      else cart.push({ ...prod, qty: 1 });
+      saveCart();
+      renderCart();
+    }
+
+    function changeQty(id, delta){
+      const item = cart.find(i => i.id === id);
+      if(!item) return;
+      item.qty = Math.max(0, item.qty + delta);
+      if(item.qty === 0) removeItem(id);
+      saveCart();
+      renderCart();
+    }
+
+    function removeItem(id){
+      cart = cart.filter(i => i.id !== id);
+      saveCart();
+      renderCart();
+    }
+
+    function clearCart(){
+      if(!confirm("Kosongkan seluruh keranjang?")) return;
+      cart = [];
+      activeCoupon = null;
+      couponInput.value = "";
+      saveCart();
+      renderCart();
+    }
+
+    // ====== CART: RENDER ======
+    function renderCart(){
+      if(cart.length === 0){
+        cartList.innerHTML = "<div class='text-gray-500'>Keranjang kosong — tambahkan produk.</div>";
+        subtotalBox.textContent = currency(0);
+        discountBox.textContent = currency(0);
+        ongkirBox.textContent = currency(0);
+        totalBox.textContent = currency(0);
+        cartCount.textContent = 0;
         return;
       }
 
-      let html = "";
-      cart.forEach(item => {
-        html += `
-        <div class='flex justify-between items-center bg-white p-3 rounded-xl shadow border'>
-          <div class='flex flex-col'>
-            <span class='font-semibold'>${item.name}</span>
-            <span class='text-sm text-gray-600'>Rp ${item.price.toLocaleString()} x ${item.qty}</span>
+      cartList.innerHTML = cart.map(item => `
+        <div class="flex justify-between items-center bg-white p-3 rounded-xl shadow border">
+          <div class="flex items-center gap-3">
+            <img src="${item.img}" alt="" class="w-12 h-12 rounded object-cover">
+            <div>
+              <div class="font-semibold">${item.name}</div>
+              <div class="text-sm text-gray-600">${currency(item.price)} x ${item.qty}</div>
+            </div>
           </div>
-          <div class='flex items-center gap-2'>
-            <button onclick='changeQty(${item.id}, -1)' class='px-3 py-1 border rounded-lg'>-</button>
-            <span class='font-semibold w-6 text-center'>${item.qty}</span>
-            <button onclick='changeQty(${item.id}, 1)' class='px-3 py-1 border rounded-lg'>+</button>
-            <button onclick='removeItem(${item.id})' class='text-red-600 font-semibold ml-2'>Hapus</button>
+          <div class="flex items-center gap-2">
+            <button class="px-3 py-1 border rounded-lg" onclick="changeQty(${item.id}, -1)">-</button>
+            <div class="w-8 text-center font-semibold">${item.qty}</div>
+            <button class="px-3 py-1 border rounded-lg" onclick="changeQty(${item.id}, 1)">+</button>
+            <button class="text-red-600 font-semibold ml-3" onclick="removeItem(${item.id})">Hapus</button>
           </div>
-        </div>`;
-      });
+        </div>
+      `).join("");
 
-      list.innerHTML = html;
+      // kalkulasi
+      const subtotal = cart.reduce((s, it) => s + it.price * it.qty, 0);
+      const city = citySelect.value;
+      const ongkir = CITY_SHIPPING[city] || 0;
+      let discount = 0;
+      if(activeCoupon === "MATCHA10") discount = Math.round(subtotal * 0.10);
+      // (bisa tambah tipe kupon lain di sini)
 
-      const subtotal = cart.reduce((a, b) => a + b.price * b.qty, 0);
-      const ongkir = 10000;
-      const discount = activeCoupon === "MATCHA10" ? subtotal * 0.10 : 0;
-      const total = subtotal + ongkir - discount;
+      const total = Math.max(0, subtotal + ongkir - discount);
 
-      document.getElementById("subtotalBox").innerHTML = `Rp ${subtotal.toLocaleString()}`;
-      document.getElementById("discountBox").innerHTML = `Rp ${discount.toLocaleString()}`;
-      document.getElementById("ongkirBox").innerHTML = `Rp ${ongkir.toLocaleString()}`;
-      document.getElementById("totalBox").innerHTML = `Rp ${total.toLocaleString()}`;
+      subtotalBox.textContent = currency(subtotal);
+      discountBox.textContent = currency(discount);
+      ongkirBox.textContent = currency(ongkir);
+      totalBox.textContent = currency(total);
+      cartCount.textContent = cart.reduce((s,i) => s + i.qty, 0);
     }
 
-    function changeQty(id, delta) {
-      const item = cart.find(i => i.id === id);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) removeItem(id);
-      renderCart();
-    }
-
-    function removeItem(id) {
-      const index = cart.findIndex(i => i.id === id);
-      if (index !== -1) cart.splice(index, 1);
-      renderCart();
-    }
-
-    let activeCoupon = null;
-    function applyCoupon() {
-      const code = document.getElementById("couponInput").value.trim();
-      if (code === "MATCHA10") {
+    // ====== COUPON ======
+    applyCouponBtn.addEventListener("click", () => {
+      const code = (couponInput.value || "").trim().toUpperCase();
+      if(code === "MATCHA10"){
         activeCoupon = code;
-        alert("Kupon berhasil! Diskon 10% diterapkan.");
+        alert("Kupon MATCHA10 diterapkan: diskon 10%!");
+      } else if(code === ""){
+        activeCoupon = null;
+        alert("Masukkan kode kupon.");
       } else {
         activeCoupon = null;
-        alert("Kupon tidak valid.");
+        alert("Kode kupon tidak valid.");
       }
+      saveCart();
       renderCart();
-    }
+    });
 
-    function changeQty(id, delta) {
-      const item = cart.find(i => i.id === id);
-      if (!item) return;
-      item.qty += delta;
-      if (item.qty <= 0) {
-        const index = cart.indexOf(item);
-        cart.splice(index, 1);
+    // ====== CITY SELECT CHANGE ======
+    citySelect.addEventListener("change", () => { renderCart(); });
+
+    // ====== LOCALSTORAGE ======
+    function saveCart(){
+      localStorage.setItem("tm_cart_v1", JSON.stringify({ cart, activeCoupon }));
+    }
+    function loadCart(){
+      try {
+        const raw = localStorage.getItem("tm_cart_v1");
+        if(!raw) return;
+        const parsed = JSON.parse(raw);
+        if(Array.isArray(parsed.cart)) cart = parsed.cart;
+        activeCoupon = parsed.activeCoupon || null;
+        if(activeCoupon) couponInput.value = activeCoupon;
+      } catch(e){
+        console.warn("Gagal load cart:", e);
       }
-      renderCart();
-    }
-      list.innerHTML = cart.map(item => `
-        <div class='flex justify-between bg-white p-3 rounded shadow'>
-          <span>${item.name}</span>
-          <span>Rp ${item.price.toLocaleString()}</span>
-        </div>`).join("");
     }
 
-    function addToCart(id) {
-      const product = products.find(p => p.id === id);
-      cart.push(product);
-      renderCart();
-    }
+    // ====== CHECKOUT (WA) ======
+    openCheckoutBtn.addEventListener("click", () => {
+      if(cart.length === 0) return alert("Keranjang masih kosong!");
+      // open modal
+      checkoutModal.classList.remove("hidden");
+      checkoutModal.classList.add("flex");
+    });
 
-    document.getElementById("openCheckout").onclick = () => {
-      if (cart.length === 0) return alert("Keranjang masih kosong!");
-      document.getElementById("checkoutModal").classList.remove("hidden");
-    };
+    closeModalBtn.addEventListener("click", () => {
+      checkoutModal.classList.add("hidden");
+      checkoutModal.classList.remove("flex");
+    });
 
-    document.getElementById("closeModal").onclick = () => {
-      document.getElementById("checkoutModal").classList.add("hidden");
-    };
+    confirmCheckoutBtn.addEventListener("click", () => {
+      const name = document.getElementById("custName").value.trim();
+      const address = document.getElementById("custAddress").value.trim();
+      const phone = document.getElementById("custPhone").value.trim();
+      const city = citySelect.value;
+      const payment = document.querySelector('input[name="payment"]:checked')?.value || "COD";
 
-    document.getElementById("checkoutBtn").onclick = () => {
-      const nama = document.getElementById("nama").value.trim();
-      const alamat = document.getElementById("alamat").value.trim();
-      const telepon = document.getElementById("telepon").value.trim();
+      if(!name || !address || !phone){
+        return alert("Silakan lengkapi Nama, Alamat, dan Nomor Telepon.");
+      }
+      if(!city){
+        return alert("Silakan pilih kota pengiriman.");
+      }
 
-      if (!nama || !alamat || !telepon)
-        return alert("Semua data wajib diisi!");
+      // recompute totals to ensure up-to-date
+      const subtotal = cart.reduce((s, it) => s + it.price * it.qty, 0);
+      const ongkir = CITY_SHIPPING[city] || 0;
+      const discount = (activeCoupon === "MATCHA10") ? Math.round(subtotal * 0.10) : 0;
+      const total = Math.max(0, subtotal + ongkir - discount);
 
-      const text = cart.map(c => `- ${c.name} (Rp ${c.price.toLocaleString()})`).join("%0A");
-      const total = cart.reduce((a, b) => a + b.price, 0);
+      // build message (url-encoded)
+      let lines = [];
+      lines.push("Halo Tomodachi Matcha 👋");
+      lines.push("Saya ingin memesan:");
+      cart.forEach((it, idx) => {
+        lines.push(`${idx+1}. ${it.name} — ${it.qty} x ${currency(it.price)} = ${currency(it.qty * it.price)}`);
+      });
+      lines.push(`Subtotal: ${currency(subtotal)}`);
+      if(discount > 0) lines.push(`Diskon (${activeCoupon}): -${currency(discount)}`);
+      lines.push(`Ongkir (${city}): ${currency(ongkir)}`);
+      lines.push(`Total: ${currency(total)}`);
+      lines.push("");
+      lines.push("Metode pembayaran: " + payment);
+      lines.push("");
+      lines.push("Data pemesan:");
+      lines.push("Nama: " + name);
+      lines.push("Alamat: " + address);
+      lines.push("Kota: " + city);
+      lines.push("Telepon: " + phone);
 
-      const url = `https://wa.me/6281234567890?text=Halo,%20saya%20${nama}%0AAlamat:%20${alamat}%0ATelepon:%20${telepon}%0A%0ASaya%20ingin%20pesan:%0A${text}%0ATotal:%20Rp${total.toLocaleString()}`;
+      const message = encodeURIComponent(lines.join("\n"));
+      const waUrl = `https://wa.me/${SHOP_PHONE}?text=${message}`;
+      window.open(waUrl, "_blank");
 
-      window.open(url, "_blank");
-    };
+      // optionally clear cart after checkout
+      // cart = []; saveCart(); renderCart();
+    });
 
-    renderProducts();
-    renderCart();
+    // ====== CLEAR CART ======
+    clearCartBtn.addEventListener("click", clearCart);
+
+    // expose functions used in markup (for onclick attributes)
+    window.addToCart = addToCart;
+    window.changeQty = changeQty;
+    window.removeItem = removeItem;
+
   </script>
-<script>
-// --- LocalStorage Load ---
-let saved = localStorage.getItem('cart');
-if(saved){ cart = JSON.parse(saved); renderCart(); }
-
-// --- Save to LocalStorage on Update ---
-function saveCart(){ localStorage.setItem('cart', JSON.stringify(cart)); }
-
-// Modify existing updateCart calls
-function updateQty(i,delta){ cart[i].qty=Math.max(1,cart[i].qty+delta); saveCart(); renderCart(); }
-function removeItem(i){ cart.splice(i,1); saveCart(); renderCart(); }
-
-// --- Shipping Options ---
-const shippingOptions = {
-  'jne': 10000,
-  'jnt': 12000,
-  'sicepat': 9000
-};
-
-// Update total calculation
-document.getElementById('shippingSelect').addEventListener('change', renderCart);
-
-// --- WhatsApp Checkout ---
-function checkoutWA(){
-  const name=document.getElementById('name').value;
-  const addr=document.getElementById('address').value;
-  const phone=document.getElementById('phone').value;
-  const shipping=document.getElementById('shippingSelect').value;
-  let text=`Halo, saya ingin memesan:%0A`;
-  cart.forEach(i=>{ text+=`- ${i.name} x${i.qty} = Rp${i.price*i.qty}%0A`; });
-  text+=`%0AOngkir: ${shipping}%0A`;
-  text+=`Nama: ${name}%0AAlamat: ${addr}%0ANo HP: ${phone}`;
-  window.open(`https://wa.me/6280000000000?text=${text}`);
-}
-</script>
-<script>
-// --- Payment Methods ---
-function getPaymentMethod(){
-  return document.querySelector('input[name="paymentMethod"]:checked')?.value || 'COD';
-}
-
-// --- City-based Shipping Cost ---
-const cityShipping = {
-  "Jakarta": 10000,
-  "Bandung": 12000,
-  "Surabaya": 15000,
-  "Medan": 18000,
-  "Makassar": 20000
-};
-
-document.getElementById('citySelect').addEventListener('change', renderCart);
-
-// Modify total calculation to include city shipping
-function getCityOngkir(){
-  const city = document.getElementById('citySelect').value;
-  return cityShipping[city] || 0;
-}
-
-// --- WhatsApp Checkout Updated ---
-function checkoutWA(){
-  const name=document.getElementById('name').value;
-  const addr=document.getElementById('address').value;
-  const phone=document.getElementById('phone').value;
-  const city=document.getElementById('citySelect').value;
-  const payment=getPaymentMethod();
-  let text=`Halo, saya ingin memesan:%0A`;
-  cart.forEach(i=>{ text+=`- ${i.name} x${i.qty} = Rp${i.price*i.qty}%0A`; });
-  text+=`%0AOngkir Kota (${city}): Rp${getCityOngkir()}%0A`;
-  text+=`Metode Pembayaran: ${payment}%0A`;
-  text+=`%0AData Pemesan:%0A`;
-  text+=`Nama: ${name}%0AAlamat: ${addr}%0ANo HP: ${phone}`;
-  window.open(`https://wa.me/6280000000000?text=${text}`);
-}
-</script>
 </body>
 </html>
