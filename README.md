@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -155,7 +156,7 @@
   <section class="px-6 mt-10">
     <h3 class="text-xl font-bold">Kontak Kami</h3>
 
-    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/628XXXXXX" class="text-green-700 underline">Hubungi Kami</a></p>
+    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/6283879528983" class="text-green-700 underline">Hubungi Kami</a></p>
     <p>📍 Bogor Utara, Kota Bogor</p>
   </section>
 
@@ -206,8 +207,8 @@
       <!-- Pilihan pembayaran -->
       <div class="flex flex-col gap-2 mb-3">
         <button onclick="pilihMetode('cod')" class="bg-yellow-500 text-white py-2 rounded-lg">COD (Bayar di Tempat)</button>
-        <button onclick="pilihMetode('transfer')" class="bg-blue-500 text-white py-2 rounded-lg">Transfer Bank</button>
-        <button onclick="pilihMetode('qris')" class="bg-green-700 text-white py-2 rounded-lg">QRIS</button>
+        <button onclick="openTransfer(); pilihMetode('transfer')" class="bg-blue-500 text-white py-2 rounded-lg">Transfer Bank</button>
+        <button onclick="openQRIS(); pilihMetode('qris')" class="bg-green-700 text-white py-2 rounded-lg">QRIS</button>
       </div>
 
       <!-- Upload bukti foto sebelum QRIS/Transfer -->
@@ -221,6 +222,29 @@
       <button onclick="closeCheckout()" class="mt-2 bg-red-500 text-white px-4 py-2 rounded-lg w-full">
         Tutup
       </button>
+    </div>
+  </div>
+
+  <!-- MODAL QRIS -->
+  <div id="qris-modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl w-80 text-center">
+      <h3 class="text-xl font-bold mb-3">Pembayaran QRIS</h3>
+      <img src="qris.png" id="qris-img" class="w-full rounded-lg border shadow" />
+      <p class="mt-3 text-green-700">Scan QR untuk membayar</p>
+      <button onclick="closeQRIS()" class="mt-4 bg-green-700 text-white px-4 py-2 rounded-lg w-full">Selesai</button>
+    </div>
+  </div>
+
+  <!-- MODAL TRANSFER -->
+  <div id="transfer-modal" class="fixed inset-0 bg-black/40 hidden items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl w-80 text-center">
+      <h3 class="text-xl font-bold mb-3">Pembayaran Transfer</h3>
+      <div class="flex flex-col gap-2 text-left">
+        <div class="border p-2 rounded cursor-pointer" onclick="pilihBank('BNI','1234567890')"><b>BNI</b> - No Rek: 1234567890</div>
+        <div class="border p-2 rounded cursor-pointer" onclick="pilihBank('BCA','0987654321')"><b>BCA</b> - No Rek: 0987654321</div>
+        <div class="border p-2 rounded cursor-pointer" onclick="pilihBank('BRI','1122334455')"><b>BRI</b> - No Rek: 1122334455</div>
+      </div>
+      <button onclick="closeTransfer()" class="mt-4 bg-green-700 text-white px-4 py-2 rounded-lg w-full">Tutup</button>
     </div>
   </div>
 
@@ -265,55 +289,68 @@ function closeCart() { document.getElementById("cart-panel").classList.remove("o
 function openCheckout() { document.getElementById("checkout-modal").classList.remove("hidden"); ambilLokasiPembeli(); }
 function closeCheckout() { document.getElementById("checkout-modal").classList.add("hidden"); }
 
-function pilihMetode(metode) { pembayaranMetode = metode; alert("Metode pembayaran: " + metode); }
+function pilihMetode(metode) { pembayaranMetode = metode; }
+
 function uploadBuktiFoto(input) { if(input.files && input.files[0]) buktiFoto = input.files[0]; }
+
+function openQRIS() { if(pembayaranMetode !== 'qris') { alert("Pilih metode pembayaran QRIS terlebih dahulu."); return; } document.getElementById("qris-modal").classList.remove("hidden"); }
+function closeQRIS() { document.getElementById("qris-modal").classList.add("hidden"); }
+
+function openTransfer() { if(pembayaranMetode !== 'transfer') { alert("Pilih metode pembayaran Transfer terlebih dahulu."); return; } document.getElementById("transfer-modal").classList.remove("hidden"); }
+function closeTransfer() { document.getElementById("transfer-modal").classList.add("hidden"); }
+
+function pilihBank(namaBank,noRek){ alert("Anda memilih "+namaBank+"\nNo Rekening: "+noRek+"\nSilakan transfer dan upload bukti pembayaran."); closeTransfer(); }
 
 function sendWa() {
   const nama = document.getElementById("buyer-name").value;
   const alamat = document.getElementById("buyer-address").value;
   const wa = document.getElementById("buyer-wa").value;
+  if(!nama || !alamat || !wa){ alert("Lengkapi data checkout."); return; }
+  if((pembayaranMetode==='qris'||pembayaranMetode==='transfer') && !buktiFoto){ alert("Upload bukti pembayaran terlebih dahulu."); return; }
 
-  if (!nama || !alamat || !wa) { alert("Lengkapi data checkout."); return; }
-
-  if((pembayaranMetode === "qris" || pembayaranMetode === "transfer") && !buktiFoto) {
-    alert("Silakan upload bukti pembayaran sebelum menyelesaikan transaksi.");
-    return;
-  }
-
-  const cartText = cart.map(i => `- ${i.name} (Rp ${i.price})`).join("\n");
+  let cartText = cart.map(i=>`- ${i.name} (Rp ${i.price})`).join("\n");
   const totalHarga = cart.reduce((t,i)=>t+i.price,0);
   const totalAkhir = totalHarga + ongkirValue;
 
-  let message = `Halo Tomodachi Matcha!
-Pesanan:
-${cartText}
-Ongkir: Rp ${ongkirValue}
-Total: Rp ${totalAkhir}
-Nama: ${nama}
-Alamat: ${alamat}
-WA: ${wa}`;
-  if(pembayaranMetode) message += `\nMetode pembayaran: ${pembayaranMetode}`;
-  if(buktiFoto) message += `\nBukti Foto: ${buktiFoto.name}`;
-
-  window.open(`https://wa.me/628XXXXXX?text=${encodeURIComponent(message)}`);
-
-  let buktiHtml = `<p>Pesanan berhasil dicatat!</p>
-                   <p><b>Nama:</b> ${nama}</p>
-                   <p><b>Alamat:</b> ${alamat}</p>
-                   <p><b>WA:</b> ${wa}</p>
-                   <p><b>Total:</b> Rp ${totalAkhir}</p>
-                   <p><b>Metode:</b> ${pembayaranMetode}</p>`;
-  if(buktiFoto) buktiHtml += `<p><b>Bukti Foto:</b> ${buktiFoto.name}</p>`;
+  // tampil bukti transaksi
+  let buktiHtml = `<p><b>Nama:</b> ${nama}</p><p><b>Alamat:</b> ${alamat}</p><p><b>No WA:</b> ${wa}</p><p><b>Total:</b> Rp ${totalAkhir}</p>`;
   document.getElementById("bukti-content").innerHTML = buktiHtml;
   document.getElementById("bukti-modal").classList.remove("hidden");
-  closeCheckout();
+
+  const message = `Halo Tomodachi Matcha!\nSaya ingin memesan:\n${cartText}\nOngkir: Rp ${ongkirValue}\nTotal: Rp ${totalAkhir}\nNama: ${nama}\nAlamat: ${alamat}\nNo WA: ${wa}\nMetode: ${pembayaranMetode}\nTerima kasih!`;
+  window.open(`https://wa.me/6283879528983?text=${encodeURIComponent(message)}`);
 }
 
-// Fungsi GPS dan ongkir
-function ambilLokasiPembeli(){ if(!navigator.geolocation) return; navigator.geolocation.getCurrentPosition(pos=>{ const lat=pos.coords.latitude; const lon=pos.coords.longitude; const jarak=hitungJarak(lat,lon,TOKO_LAT,TOKO_LON); ongkirValue=Math.round(jarak*5000); renderCart(); }); }
-function hitungJarak(lat1, lon1, lat2, lon2){ const R=6371; let dLat=(lat2-lat1)*Math.PI/180; let dLon=(lon2-lon1)*Math.PI/180; let a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2; let c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a)); return R*c; }
-function getLocation(){ if(!navigator.geolocation){document.getElementById("gps-result").innerText="Browser tidak mendukung GPS.";return;} navigator.geolocation.getCurrentPosition(pos=>{const lat=pos.coords.latitude;const lon=pos.coords.longitude; document.getElementById("gps-result").innerHTML="Lokasi Anda:<br>Lat: "+lat+"<br>Lon: "+lon;},()=>{document.getElementById("gps-result").innerText="Tidak dapat mengambil lokasi."}); }
+function ambilLokasiPembeli() {
+  if(!navigator.geolocation){ alert("GPS tidak tersedia."); return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude; const lon=pos.coords.longitude;
+    const jarak=hitungJarak(lat,lon,TOKO_LAT,TOKO_LON);
+    ongkirValue = Math.round(jarak*5000);
+    document.getElementById("ongkir-display").innerText="Rp "+ongkirValue;
+    renderCart();
+  });
+}
+
+function hitungJarak(lat1,lon1,lat2,lon2){
+  const R=6371;
+  let dLat=(lat2-lat1)*Math.PI/180;
+  let dLon=(lon2-lon1)*Math.PI/180;
+  let a=Math.sin(dLat/2)**2+Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  let c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+  return R*c;
+}
+
+function getLocation(){
+  if(!navigator.geolocation){ document.getElementById("gps-result").innerText="Browser tidak mendukung GPS."; return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    const lat=pos.coords.latitude; const lon=pos.coords.longitude;
+    document.getElementById("gps-result").innerHTML="Lokasi Anda:<br>Lat: "+lat+"<br>Lon: "+lon;
+  },()=>{ document.getElementById("gps-result").innerText="Tidak dapat mengambil lokasi."; });
+}
+
 function closeBukti(){ document.getElementById("bukti-modal").classList.add("hidden"); }
+
   </script>
 
 </body>
