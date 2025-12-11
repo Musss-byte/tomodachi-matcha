@@ -104,16 +104,13 @@
     </div>
 
   </main>
-
-  <!-- FOOTER -->
   <footer class="text-center py-4 text-sm text-gray-600">
     © <span id="year"></span> Tomodachi Matcha — dibuat dengan ❤️
   </footer>
 
   <!-- SCRIPT -->
   <script>
-    // ====== KONFIG ======
-    const SHOP_PHONE = "6281234567890"; // <<-- GANTI NOMOR WA tujuan (format internasional, tanpa '+')
+    const SHOP_PHONE = "6283879528983"; / (format internasional, tanpa '+')
     const PRODUCTS = [
       { id: 1, name: "Matcha Premium 100g", price: 85000, img: "https://images.unsplash.com/photo-1521305916504-4a1121188589?w=800&q=80" },
       { id: 2, name: "Matcha Latte Mix 200g", price: 120000, img: "https://images.unsplash.com/photo-1612874742651-d9f91b3d60c8?w=800&q=80" },
@@ -123,14 +120,12 @@
     ];
     const CITY_SHIPPING = { "Jakarta":10000, "Bandung":12000, "Surabaya":15000, "Medan":18000, "Makassar":20000 };
 
-    // ====== STATE ======
+ //
     let cart = []; // each item: {id,name,price,img,qty}
     let activeCoupon = null;
-
-    // ====== UTIL ======
+  //
     const currency = (v) => "Rp " + Number(v).toLocaleString("id-ID");
-
-    // ====== DOM REFERENCES ======
+  //
     const productGrid = document.getElementById("productGrid");
     const cartList = document.getElementById("cartList");
     const subtotalBox = document.getElementById("subtotalBox");
@@ -145,15 +140,11 @@
     const applyCouponBtn = document.getElementById("applyCouponBtn");
     const couponInput = document.getElementById("couponInput");
     const citySelect = document.getElementById("citySelect");
-    const clearCartBtn = document.getElementById("clearCartBtn");
-
-    // ====== INIT ======
-    document.getElementById("year").textContent = new Date().getFullYear();
+    const clearCartBtn = document.getElementById("clearCartBtn"); document.getElementById("year").textContent = new Date().getFullYear();
     loadCart();
     renderProducts();
     renderCart();
-
-    // ====== RENDER PRODUCTS ======
+    
     function renderProducts(){
       productGrid.innerHTML = PRODUCTS.map(p => `
         <article class="bg-white p-3 rounded-xl shadow flex flex-col">
@@ -166,8 +157,6 @@
         </article>
       `).join("");
     }
-
-    // ====== CART: CRUD ======
     function addToCart(id){
       const prod = PRODUCTS.find(p => p.id === id);
       if(!prod) return;
@@ -201,8 +190,6 @@
       saveCart();
       renderCart();
     }
-
-    // ====== CART: RENDER ======
     function renderCart(){
       if(cart.length === 0){
         cartList.innerHTML = "<div class='text-gray-500'>Keranjang kosong — tambahkan produk.</div>";
@@ -232,7 +219,6 @@
         </div>
       `).join("");
 
-      // kalkulasi
       const subtotal = cart.reduce((s, it) => s + it.price * it.qty, 0);
       const city = citySelect.value;
       const ongkir = CITY_SHIPPING[city] || 0;
@@ -248,8 +234,6 @@
       totalBox.textContent = currency(total);
       cartCount.textContent = cart.reduce((s,i) => s + i.qty, 0);
     }
-
-    // ====== COUPON ======
     applyCouponBtn.addEventListener("click", () => {
       const code = (couponInput.value || "").trim().toUpperCase();
       if(code === "MATCHA10"){
@@ -265,11 +249,8 @@
       saveCart();
       renderCart();
     });
-
-    // ====== CITY SELECT CHANGE ======
     citySelect.addEventListener("change", () => { renderCart(); });
 
-    // ====== LOCALSTORAGE ======
     function saveCart(){
       localStorage.setItem("tm_cart_v1", JSON.stringify({ cart, activeCoupon }));
     }
@@ -285,9 +266,7 @@
         console.warn("Gagal load cart:", e);
       }
     }
-
-    // ====== CHECKOUT (WA) ======
-    openCheckoutBtn.addEventListener("click", () => {
+openCheckoutBtn.addEventListener("click", () => {
       if(cart.length === 0) return alert("Keranjang masih kosong!");
       // open modal
       checkoutModal.classList.remove("hidden");
@@ -346,8 +325,6 @@
       // optionally clear cart after checkout
       // cart = []; saveCart(); renderCart();
     });
-
-    // ====== CLEAR CART ======
     clearCartBtn.addEventListener("click", clearCart);
 
     // expose functions used in markup (for onclick attributes)
