@@ -57,7 +57,7 @@
     </div>
     <!-- PRODUK 3 -->
     <div class="bg-white p-4 rounded-xl shadow border">
-      <img src="produk3.jpg" class="rounded-lg w-full h-40 object-cover" />
+      <img src="https://share.google/93duyv0S2H7Aw9IU3.jpg" class="rounded-lg w-full h-40 object-cover" />
       <h4 class="font-bold mt-2">Matcha Hazelnut</h4>
       <p class="text-green-700">Rp 20.000</p>
       <button onclick="addToCart('Matcha Hazelnut',20000)" class="mt-2 bg-green-600 text-white px-4 py-2 rounded-lg w-full">Tambah</button>
@@ -105,11 +105,12 @@
 </section>
 
 <!-- CONTACT -->
-  <section class="px-6 mt-10">
-    <h3 class="text-xl font-bold">Kontak Kami</h3>
-    <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/628XXXXXX" class="text-green-700 underline">Hubungi Kami</a></p>
-    <p>📍 Bogor Utara, Kota Bogor</p>
-  </section>
+<section class="px-6 mt-10">
+  <h3 class="text-xl font-bold">Kontak Kami</h3>
+  <p class="mt-2">📞 WhatsApp: <a href="https://wa.me/6283879528983" class="text-green-700 underline">Hubungi Kami</a></p>
+  <p>📍 Bogor Utara, Kota Bogor</p>
+</section>
+
 <!-- FOOTER -->
 <footer class="text-center py-10 mt-10 text-green-800">
   <p>© 2025 Tomodachi Matcha. All Rights Reserved.</p>
