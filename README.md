@@ -112,12 +112,12 @@
     <p class="text-green-800">WhatsApp: 0812-3456-7890</p>
     <p class="text-green-800">Email: hello@tomodachimatcha.com</p>
 
-    <!-- GOOGLE MAPS (Jl Pembangunan RT 02 RW 05 Kedung Halang Bogor Utara Kota Bogor) -->
+    <!-- GOOGLE MAPS (Jembatan ikrar No.rt 02, RT.rw 05/RW.05, Kedunghalang, Kec. Bogor Utara, Kota Bogor, Jawa Barat) -->
     <h3 class="font-bold text-green-900 text-lg mt-10">Lokasi Kami</h3>
 
     <div class="max-w-xl mx-auto mt-4 rounded-xl overflow-hidden shadow-lg border border-green-200">
       <iframe
-        src="https://goo.gl/maps/k4Lo4xda9Km4BYyV6!"
+        src="https://maps.app.goo.gl/8NwqZUEbADsW36tA7!"
         width="100%"
         height="300"
         style="border:0;"
@@ -219,8 +219,8 @@
 
     // Koordinat Toko
     const toko = {
-      lat: -6.563240, 
-      lng: 106.812854 
+      lat: -6,5528629, 
+      lng: 106,8132911 
     };
 
     // Fungsi hitung jarak (Haversine)
